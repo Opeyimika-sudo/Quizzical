@@ -8,10 +8,10 @@ export default function Question(props) {
             <h2 className="quiz_question">{decode(props.data.question)}</h2>
             <ul className="quiz_options">
                 {choices.map((item, index) => (
-                    <li key={index}>{decode(item)}</li>
+                    <li className="quiz_option" key={index}>{decode(item)}</li>
                 ))}
             </ul>
-            
+            <hr />
     </section>
   )
 }
