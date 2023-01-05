@@ -50,6 +50,7 @@ export default function Quiz() {
   return (
     <div className="quiz">
       {quizArray}
+      <button className="submit">Check Answers</button>
     </div>
   )
 }
