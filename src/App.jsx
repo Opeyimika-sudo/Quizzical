@@ -1,22 +1,26 @@
 import React from 'react';
-import {
-  Routes,
-  Route
-} from "react-router-dom";
 import './App.css'
 
-import Home from './pages/Home'
-import Quiz from './pages/Quiz'
+import Home from './components/Home.jsx'
+import Quiz from './components/Quiz.jsx'
 
 function App() {
+  const [pageDisplay, setPageDisplay] = React.useState(false)
 
+  function handleClick(){
+    setPageDisplay(pageDisplay => !pageDisplay);
+  }
+  
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/quiz" element={<Quiz />} />
-      </Routes>
-    </div>
+      <div className="App">
+        {
+        pageDisplay 
+        ?
+        <Quiz />
+        :
+        <Home handleClick={handleClick}/>
+        }
+      </div>
   )
 }
 
