@@ -8,15 +8,15 @@ function App() {
   const [pageDisplay, setPageDisplay] = React.useState(false)
 
   function handleClick(){
-    setPageDisplay(pageDisplay => !pageDisplay);
+    setPageDisplay(true);
   }
-  
+
   return (
       <div className="App">
         {
         pageDisplay 
         ?
-        <Quiz />
+        <Quiz/>
         :
         <Home handleClick={handleClick}/>
         }
