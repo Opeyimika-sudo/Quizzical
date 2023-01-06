@@ -20,7 +20,8 @@ export default function Quiz() {
               let incorrectAnswers = item.incorrect_answers.map((item)=> {
                 return {
                   string: item,
-                  isChecked: false
+                  isChecked: false,
+                  isCorrect: false
                 }
             })
               // takes a random number of options from the array of incorrect answers as its own array
@@ -29,7 +30,8 @@ export default function Quiz() {
               // add the correct answer to that array
               randomOptions.push({
                 string: item.correct_answer,
-                isChecked: false
+                isChecked: false,
+                isCorrect: true
               });
               // find the options from the array of incorrect answers which was not picked earlier
               let remainingOptions= incorrectAnswers.filter((item) => randomOptions.includes(item) === false);
