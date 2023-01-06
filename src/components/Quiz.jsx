@@ -45,6 +45,7 @@ export default function Quiz() {
               multichoice: options
             }} 
             )
+            console.log(apiData);
             return apiData;
           })
         }
@@ -63,12 +64,7 @@ export default function Quiz() {
       // on clicking an option, send its id back and set it to true
       // i'm thinking to use an object to store the answers for each of the 5 questions and then store the answers for each of the 5 questions and then compare the answers upon clicking "check answers"
       function handleClick(questionId, optionId){
-        console.log(questionId);
-        console.log(optionId);
-
         // i need to be able to change the isChecked xtics but if it is unchanged, I need it to go back to its default
-
-        
         setApiData((prev) => {
           let newApiData = [];
           prev.map((item)=> {
@@ -100,20 +96,49 @@ export default function Quiz() {
               else{
                 newApiData.push(item);
               }
-            }) 
-            console.log(newApiData);
+            })
             return newApiData;
             }
             )
-        }
-            
+    }
+
+    // state for questions correct
+    // let totalCorrectAnswers;
+    // const [correctQuestions, setCorrectQuestions] = React.useState(totalCorrectAnswers);
+
+    // state for submission of questions
+    const [isSubmitted, setIsSubmitted] = React.useState(false)
+    
+
+    function handleSubmit(){
+      setIsSubmitted(true);
+      let arrayOfAnswers = [];
+      apiData.map((item) => {
+        item.multichoice.map((unit) => {
+          if(unit.isChecked == true && unit.isCorrect == true){
+            arrayOfAnswers.push(1);
+                }
+          else if(unit.isChecked === true && unit.isCorrect === false){
+            arrayOfAnswers.push(0);
+          }
+              })
+             
+        })
+        let initialValue = 0;
+        totalCorrectAnswers = arrayOfAnswers.reduce((acc, current) => acc + current, initialValue);
+        console.log(totalCorrectAnswers);
+        // setCorrectQuestions(totalCorrectAnswers);
+        // console.log(correctQuestions);
+    }
+          
+    
       const quizArray = apiData.map((item) =>
-        <Question key={item.id} handleClick={handleClick} id={item.id} data={item}/> 
+        <Question key={item.id} handleClick={handleClick} isSubmitted={isSubmitted} id={item.id} data={item}/> 
       )
   return (
     <div className="quiz">
       {quizArray}
-      <button className="submit">Check Answers</button>
+      <button className="submit" onClick={handleSubmit}>Check Answers</button>
     </div>
   )
 }
