@@ -31,7 +31,6 @@ export default function Question(props) {
                                 : 
                                 item.isChecked ? '1' :'0.5' 
                                 : '1', 
-                        
                     }}
                      onClick={()=>props.handleClick(props.id, index)}
                     key={index}>{decode(item.string)}</li>
