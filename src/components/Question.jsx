@@ -3,7 +3,6 @@ import {decode} from 'html-entities';
 
 export default function Question(props) {
     let choices = props.data.multichoice;
-    console.log(choices);
   return (
     <section>
             <h2 className="quiz_question">{decode(props.data.question)}</h2>
