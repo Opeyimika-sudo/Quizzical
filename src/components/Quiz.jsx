@@ -5,15 +5,7 @@ import { nanoid } from 'nanoid'
 export default function Quiz() {
     const [apiData, setApiData] = React.useState([])
     // state for the questions --- options
-    const [,] = React.useState({
-      first: {
-        
-      },
-      second: "",
-      third: "",
-      fourth: "",
-      fifth: ""
-    })
+    
 
     React.useEffect(()=> {
       let isActive = true;
@@ -24,7 +16,6 @@ export default function Quiz() {
           setApiData(() => {
             let apiData = [];
             let quiz = data.results;
-            console.log(quiz);
             apiData = quiz.map((item) => {
               let incorrectAnswers = item.incorrect_answers.map((item)=> {
                 return {
@@ -52,7 +43,6 @@ export default function Quiz() {
               multichoice: options
             }} 
             )
-            console.log(apiData);
             return apiData;
           })
         }
@@ -73,8 +63,39 @@ export default function Quiz() {
       function handleClick(questionId, optionId){
         console.log(questionId);
         console.log(optionId);
-      }
 
+        // i need to be able to change the isChecked xtics but if it is unchanged, I need it to go back to its default
+
+        
+        setApiData((prev) => {
+          let newApiData = [];
+          prev.map((item)=> {
+            if(item.id === questionId){
+              newApiData.push({
+                ...item,
+                multichoice: item.multichoice.map((piece, index) => {
+                  if(index === optionId){
+                    return {
+                      ...piece,
+                      isChecked: !item.multichoice[optionId].isChecked
+                    }
+                  }
+                  else {
+                    return piece;
+                  }
+                }
+              )})
+                }
+              else{
+                newApiData.push(item);
+              }
+            }) 
+            console.log(newApiData);
+            return newApiData;
+            }
+            )
+        }
+            
       const quizArray = apiData.map((item) =>
         <Question key={item.id} handleClick={handleClick} id={item.id} data={item}/> 
       )
