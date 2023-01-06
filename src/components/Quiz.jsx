@@ -81,7 +81,16 @@ export default function Quiz() {
                     }
                   }
                   else {
-                    return piece;
+                    if(piece.isChecked === true){
+                      return {
+                        ...piece,
+                        isChecked: !item.multichoice[index].isChecked
+                      }
+                    }
+                    else {
+                      return piece;
+                    }
+                    
                   }
                 }
               )})
