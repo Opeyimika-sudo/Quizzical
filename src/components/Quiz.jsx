@@ -4,7 +4,13 @@ import { nanoid } from 'nanoid'
 
 export default function Quiz() {
     const [apiData, setApiData] = React.useState([])
+    // to know whether it's a handleSubmit function to call or tryAgain function
+    const [changeState, setChangeState] = React.useState(false)
     // state for the questions --- options
+
+    // state that only changes if tryAgain function is triggered
+    // usEffect relies on the state
+    const [tryAgainState, setTryAgainState] = React.useState(false)
     
 
     React.useEffect(()=> {
@@ -25,7 +31,6 @@ export default function Quiz() {
                 }
             })
               // takes a random number of options from the array of incorrect answers as its own array
-              // let randomOptions = item.incorrect_answers.slice(Math.floor(Math.random() * 4));
               let randomOptions = incorrectAnswers.slice(Math.floor(Math.random() * 4));
               // add the correct answer to that array
               randomOptions.push({
@@ -56,15 +61,9 @@ export default function Quiz() {
       return () => {
         isActive = false;
       }
-      }, [])
-      // save correct answers
-      // const [quizAnswers, setQuizAnswers] = React.useState([]);
-      // console.log(quizAnswers);
-      // select an option, store that option for as many times that it may change, let the option that is selected 
-      // on clicking an option, send its id back and set it to true
-      // i'm thinking to use an object to store the answers for each of the 5 questions and then store the answers for each of the 5 questions and then compare the answers upon clicking "check answers"
+      }, [tryAgainState])
+      
       function handleClick(questionId, optionId){
-        // i need to be able to change the isChecked xtics but if it is unchanged, I need it to go back to its default
         setApiData((prev) => {
           let newApiData = [];
           prev.map((item)=> {
@@ -103,34 +102,38 @@ export default function Quiz() {
     }
 
     // state for questions correct
-    // let totalCorrectAnswers;
-    // const [correctQuestions, setCorrectQuestions] = React.useState(totalCorrectAnswers);
+    let totalCorrectAnswers;
+    const [correctQuestions, setCorrectQuestions] = React.useState(0);
 
     // state for submission of questions
     const [isSubmitted, setIsSubmitted] = React.useState(false)
     
-
     function handleSubmit(){
-      setIsSubmitted(true);
-      let arrayOfAnswers = [];
-      apiData.map((item) => {
-        item.multichoice.map((unit) => {
-          if(unit.isChecked == true && unit.isCorrect == true){
-            arrayOfAnswers.push(1);
-                }
-          else if(unit.isChecked === true && unit.isCorrect === false){
-            arrayOfAnswers.push(0);
-          }
-              })
-             
-        })
+        setIsSubmitted(true);
+        let arrayOfAnswers = [];
+        apiData.map((item) => {
+          item.multichoice.map((unit) => {
+            if(unit.isChecked == true && unit.isCorrect == true){
+              arrayOfAnswers.push(1);
+                  }
+            else if(unit.isChecked === true && unit.isCorrect === false){
+              arrayOfAnswers.push(0);
+            }
+                })
+          })
         let initialValue = 0;
         totalCorrectAnswers = arrayOfAnswers.reduce((acc, current) => acc + current, initialValue);
         console.log(totalCorrectAnswers);
-        // setCorrectQuestions(totalCorrectAnswers);
-        // console.log(correctQuestions);
+        setCorrectQuestions(totalCorrectAnswers);
+        setChangeState(true);
     }
           
+    function tryAgain(){
+      console.log("Yo! This function was called")
+      setIsSubmitted(false);
+      setTryAgainState(prev => !prev);
+      setChangeState(false);
+    }
     
       const quizArray = apiData.map((item) =>
         <Question key={item.id} handleClick={handleClick} isSubmitted={isSubmitted} id={item.id} data={item}/> 
@@ -138,7 +141,10 @@ export default function Quiz() {
   return (
     <div className="quiz">
       {quizArray}
-      <button className="submit" onClick={handleSubmit}>Check Answers</button>
+      <div className="button_section">
+        {isSubmitted && <p>You scored {correctQuestions}/5</p>}
+        <button className="submit" onClick={changeState ? tryAgain : handleSubmit}>{isSubmitted ? 'Try Again' : 'Check Answers'}</button>
+      </div>
     </div>
   )
 }
