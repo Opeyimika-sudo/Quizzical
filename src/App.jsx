@@ -16,7 +16,7 @@ function App() {
         {
         pageDisplay 
         ?
-        <Quiz/>
+        <Quiz />
         :
         <Home handleClick={handleClick}/>
         }
