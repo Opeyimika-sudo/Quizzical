@@ -15,8 +15,8 @@ Quizzical is _that_ quiz app that makes it super easy for you to learn something
 - Upon submitting, the user gets feedback on the options he got right and those he/she chose wrongly via colour change
 - The user also gets to see their score for each trial and can easily try again
 
-<!--- ### Demo --->
-<!--- ![Demo of ChatJibiti](./src/assets/chatjibiti-clone.gif)  --->
+### Demo 
+![Demo of Quizzical](./src/assets/quizzical.gif)
 
 
 ### Tech Stack
