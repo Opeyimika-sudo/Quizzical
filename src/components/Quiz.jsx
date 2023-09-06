@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 export default function Quiz() {
     const [apiData, setApiData] = React.useState([])
     // to know whether it's a handleSubmit function to call or tryAgain function
-    const [changeState, setChangeState] = React.useState(false)
+    const [buttonState, setButtonState] = React.useState(false)
     // state for the questions --- options
 
     // state that only changes if tryAgain function is triggered
@@ -125,25 +125,26 @@ export default function Quiz() {
         totalCorrectAnswers = arrayOfAnswers.reduce((acc, current) => acc + current, initialValue);
         console.log(totalCorrectAnswers);
         setCorrectQuestions(totalCorrectAnswers);
-        setChangeState(true);
+        setButtonState(true);
     }
           
     function tryAgain(){
       console.log("Yo! This function was called")
       setIsSubmitted(false);
       setTryAgainState(prev => !prev);
-      setChangeState(false);
+      setButtonState(false);
     }
     
-      const quizArray = apiData.map((item) =>
-        <Question key={item.id} handleClick={handleClick} isSubmitted={isSubmitted} id={item.id} data={item}/> 
-      )
+    const quizArray = apiData.map((item) =>
+      <Question key={item.id} handleClick={handleClick} isSubmitted={isSubmitted} id={item.id} data={item}/> 
+    )
+
   return (
     <div className="quiz">
       {quizArray}
       <div className="button_section">
         {isSubmitted && <p>You scored {correctQuestions}/5</p>}
-        <button className="submit" onClick={changeState ? tryAgain : handleSubmit}>{isSubmitted ? 'Try Again' : 'Check Answers'}</button>
+        {apiData.length != 0 && <button className="submit" onClick={buttonState ? tryAgain : handleSubmit}>{isSubmitted ? 'Try Again' : 'Check Answers'}</button>}
       </div>
     </div>
   )
